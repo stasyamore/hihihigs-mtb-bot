@@ -1,12 +1,10 @@
 import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
-
-#токен бота
-API_TOKEN = "7849764708:AAE60pgnyOUZceA0K7z1j6HJTubXFNPYGYo"
+from config import TOKEN
 
 #экземпляр бота и диспетчера
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 #Обработчик команды /start
