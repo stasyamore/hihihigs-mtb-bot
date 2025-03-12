@@ -1,10 +1,11 @@
+# version: 0.1.0
 import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from config import TOKEN
 
 #экземпляр бота и диспетчера
-bot = Bot(token=TOKEN)
+bot = Bot(token= TOKEN)
 dp = Dispatcher()
 
 #Обработчик команды /start
@@ -20,5 +21,5 @@ async def echo_message(message: types.Message):
 async def main():
     await dp.start_polling(bot)
 
-if __name__ == "__main__":
+if __name__ == "main":
     asyncio.run(main())
