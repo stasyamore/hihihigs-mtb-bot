@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, Router, types
+import asyncio
 from aiogram.filters import Command
 from config import TOKEN
 
@@ -20,5 +21,4 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
