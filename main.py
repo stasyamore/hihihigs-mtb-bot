@@ -1,24 +1,25 @@
-from aiogram import Bot, Dispatcher, Router, types
+# version: 0.1.0
+import asyncio
+from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from config import TOKEN
 
-bot = Bot(token=TOKEN)
+#экземпляр бота и диспетчера
+bot = Bot(token= TOKEN)
 dp = Dispatcher()
-router = Router()
 
-@router.message(Command(commands=["start"]))
+#Обработчик команды /start
+@dp.message(Command(commands=["start"]))
 async def process_start_command(message: types.Message):
     await message.answer("Привет!")
 
-@router.message()
+#Обработчик текстовых сообщений
+@dp.message()
 async def echo_message(message: types.Message):
     await message.answer(message.text)
-
-dp.include_router(router)
 
 async def main():
     await dp.start_polling(bot)
 
-if __name__ == "__main__":
-    import asyncio
+if __name__ == "main":
     asyncio.run(main())
