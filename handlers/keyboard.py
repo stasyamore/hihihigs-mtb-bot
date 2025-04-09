@@ -1,4 +1,4 @@
-import aiogram.types
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 # TODO - создайте клавиатуру, которая будет появляться в сообщении либо находится там постоянно
@@ -9,4 +9,10 @@ import aiogram.types
 
 
 # Здесь создать клавиатуры
-keyboard = None
+#Создание инлайн-клавиатуры с кнопками
+keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Кнопка 1", callback_data="button1")],
+        [InlineKeyboardButton(text="Кнопка 2", callback_data="button2")]
+    ]
+)
