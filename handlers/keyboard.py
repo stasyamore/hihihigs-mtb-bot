@@ -7,9 +7,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 # Примеры создания клавиатуры ReplyKeyboardMarkup https://habr.com/ru/articles/820733/#:~:text=%D0%98%D0%BC%D0%BF%D0%BE%D1%80%D1%82%D1%8B%20%D0%B2%20all_kb.py%3A
 # Примеры создания клавиатуры Keyboard builder https://mastergroosha.github.io/aiogram-3-guide/buttons/
 
-
-# Здесь создать клавиатуры
-#Создание инлайн-клавиатуры с кнопками
+# Создание инлайн-клавиатуры с кнопками
 keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text="Кнопка 1", callback_data="button1")],
