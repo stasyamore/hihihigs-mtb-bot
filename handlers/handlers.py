@@ -1,4 +1,4 @@
-from aiogram import types, Router
+from aiogram import types, Router, Dispatcher
 from aiogram.filters import Command
 from .keyboard import keyboard
 
@@ -15,3 +15,6 @@ async def help_command(message: types.Message):
 @router.message(Command("status"))
 async def status_command(message: types.Message):
     await message.answer(f"ID: {message.from_user.id}\nUsername: @{message.from_user.username}")
+
+def register_message_handlers(dp: Dispatcher):
+    dp.include_router(router)
