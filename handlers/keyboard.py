@@ -9,4 +9,11 @@ import aiogram.types
 
 
 # Здесь создать клавиатуры
-keyboard = None
+from aiogram.types import  ReplyKeyboardMarkup, KeyboardButton
+
+keyword = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="/help"), KeyboardButton(text="/status")]
+        ],
+    resize_keyboard=True
+)
