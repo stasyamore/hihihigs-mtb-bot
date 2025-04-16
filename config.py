@@ -11,3 +11,7 @@ TOKEN:str = os.getenv("TOKEN")
 
 def config():
     return None
+
+
+def config():
+    return None
