@@ -8,3 +8,4 @@ async def set_my_commands(bot: Bot):
         types.BotCommand(command="info", description="Показать информацию"),
     ]
     await bot.set_my_commands(commands)
+
