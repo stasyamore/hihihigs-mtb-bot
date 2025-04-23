@@ -1,8 +1,9 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="/help"), KeyboardButton(text="/status")]
-    ],
-    resize_keyboard=True
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Кнопка 1", callback_data="button1")],
+        [InlineKeyboardButton(text="Кнопка 2", callback_data="button2")]
+    ]
 )
