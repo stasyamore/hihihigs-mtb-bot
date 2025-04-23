@@ -7,3 +7,11 @@ load_dotenv()  # take environment variables from .env.
 # `os.getenv`) as if they came from the actual environment. test
 
 TOKEN:str = os.getenv("TOKEN")
+
+
+def config():
+    return None
+
+
+def config():
+    return None
