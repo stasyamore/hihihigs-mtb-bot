@@ -1,5 +1,9 @@
-# Файл __init__.py.py позволяет обращаться к папке как к модулю
-# и импортировать из него содержимое
+__all__ = ["register_message_handlers", "set_my_commands"]
 
-from .handlers import register_message_handlers
+from .handlers import router as message_router
 from .bot_commands import set_my_commands
+from .callbacks import router as callback_router
+
+def register_message_handlers(dp):
+    dp.include_router(message_router)
+    dp.include_router(callback_router)

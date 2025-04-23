@@ -1,25 +1,28 @@
-# version: 0.1.0
+
+# version1.0.0
 import asyncio
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
+import logging
+from aiogram import Bot, Dispatcher
 from config import TOKEN
+from handlers import register_message_handlers, set_my_commands
 
-#экземпляр бота и диспетчера
-bot = Bot(token= TOKEN)
-dp = Dispatcher()
-
-#Обработчик команды /start
-@dp.message(Command(commands=["start"]))
-async def process_start_command(message: types.Message):
-    await message.answer("Привет!")
-
-#Обработчик текстовых сообщений
-@dp.message()
-async def echo_message(message: types.Message):
-    await message.answer(message.text)
+# Настройка логирования
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    filename="bot.log",
+    filemode="a",
+)
+logger = logging.getLogger(__name__)
 
 async def main():
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher()
+
+    register_message_handlers(dp)
+    await set_my_commands(bot)
+
     await dp.start_polling(bot)
 
-if __name__ == "main":
+if __name__ == "__main__":
     asyncio.run(main())
