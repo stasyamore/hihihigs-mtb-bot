@@ -21,10 +21,10 @@ async def main():
     setup_logger(fname=__name__)
 
     # Регистрация хендлеров
-    register_message_handlers()
+    register_message_handlers(dp)
 
     # Установка команд
-    set_my_commands()
+    await set_my_commands(bot)
 
     # Запуск polling
     await dp.start_polling(bot)
