@@ -3,10 +3,11 @@ from aiogram.filters import Command
 from .keyboard import keyboard
 
 router = Router()
-
+"""
 @router.message(Command("start"))
 async def start_command(message: types.Message):
     await message.answer(f"Привет, {message.from_user.full_name}!", reply_markup=keyboard)
+"""
 
 @router.message(Command("help"))
 async def help_command(message: types.Message):
