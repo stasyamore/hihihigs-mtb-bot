@@ -1,3 +1,4 @@
+
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
@@ -20,13 +21,13 @@ async def main():
     setup_logger(fname=__name__)
 
     # Регистрация хендлеров
-    register_message_handlers()
+    register_message_handlers(dp)
 
     # Установка команд
-    set_my_commands()
+    await set_my_commands(bot)
 
     # Запуск polling
     await dp.start_polling(bot)
-
+    
 if __name__ == "__main__":
     asyncio.run(main())
