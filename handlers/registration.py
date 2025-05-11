@@ -2,8 +2,11 @@ from aiogram import Router, types
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from utils.db import async_session, User
 from sqlalchemy import select
+import secrets
+import string
 
 router = Router()
 
@@ -19,30 +22,40 @@ async def start_registration(message: types.Message, state: FSMContext):
         if user:
             await message.answer("Вы уже зарегистрированы!")
             return
-    # Предложить выбрать роль
-    kb = types.ReplyKeyboardMarkup(
-        keyboard=[[types.KeyboardButton(text="Преподаватель")], [types.KeyboardButton(text="Слушатель")]],
-        resize_keyboard=True
+    # Предложить выбрать роль    
+    kb = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Преподаватель", callback_data="role_teacher")],
+            [InlineKeyboardButton(text="Слушатель", callback_data="role_student")]
+        ]
     )
     await message.answer("Выберите тип пользователя:", reply_markup=kb)
     await state.set_state(Registration.choosing_role)
 
-@router.message(Registration.choosing_role)
-async def process_role(message: types.Message, state: FSMContext):
-    role = message.text.lower()
-    if role == "преподаватель":
-        # Сохраняем пользователя
+# Генерация уникального кода преподавателя
+async def generate_unique_tutor_code(session):
+    alphabet = string.ascii_uppercase + string.digits
+    while True:
+        code = ''.join(secrets.choice(alphabet) for _ in range(6))
+        result = await session.execute(select(User).where(User.tutrocode == code))
+        if not result.scalar_one_or_none():
+            return code
+
+@router.callback_query(lambda c: c.data in ["role_teacher", "role_student"]) 
+async def process_role_callback(callback: types.CallbackQuery, state: FSMContext):
+    role = callback.data
+    if role == "role_teacher":
         async with async_session() as session:
-            user = User(userid=message.from_user.id, username=message.from_user.username or "", role="teacher")
+            tutor_code = await generate_unique_tutor_code(session)
+            # Сохраняем пользователя
+            user = User(userid=callback.from_user.id, username=callback.from_user.username or "", role="teacher", tutrocode=tutor_code)
             session.add(user)
             await session.commit()
-        await message.answer("Вы зарегистрированы как преподаватель!", reply_markup=types.ReplyKeyboardRemove())
+        await callback.message.edit_text(f"Вы зарегистрированы как преподаватель! Ваш код для студентов: {tutor_code}")
         await state.clear()
-    elif role == "слушатель":
-        await message.answer("Введите код преподавателя, который вы получили:")
+    elif role == "role_student":
+        await callback.message.edit_text("Введите код преподавателя, который вы получили:")
         await state.set_state(Registration.entering_tutor_code)
-    else:
-        await message.answer("Пожалуйста, выберите 'Преподаватель' или 'Слушатель'.")
 
 @router.message(Registration.entering_tutor_code)
 async def process_tutor_code(message: types.Message, state: FSMContext):
@@ -59,4 +72,4 @@ async def process_tutor_code(message: types.Message, state: FSMContext):
         session.add(user)
         await session.commit()
     await message.answer(f"Вы зарегистрированы как слушатель преподавателя @{teacher.username}!", reply_markup=types.ReplyKeyboardRemove())
-    await state.clear()
+    await state.clear() 
