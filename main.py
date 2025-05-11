@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from config import TOKEN
 from handlers import register_message_handlers, set_my_commands
 from utils import setup_logger
-
+from utils.db import init_db
 
 async def main():
     """
@@ -17,8 +17,11 @@ async def main():
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
 
-    # запуск логирования
+    # Запуск логирования
     setup_logger(fname=__name__)
+
+    # Инициализация базы данных
+    await init_db()
 
     # Регистрация хендлеров
     register_message_handlers(dp)
