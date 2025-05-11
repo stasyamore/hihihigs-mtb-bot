@@ -1,25 +1,33 @@
-# version: 0.1.0
+
 import asyncio
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
+import logging
+from aiogram import Bot, Dispatcher
 from config import TOKEN
+from handlers import register_message_handlers, set_my_commands
+from utils import setup_logger
 
-#экземпляр бота и диспетчера
-bot = Bot(token= TOKEN)
-dp = Dispatcher()
-
-#Обработчик команды /start
-@dp.message(Command(commands=["start"]))
-async def process_start_command(message: types.Message):
-    await message.answer("Привет!")
-
-#Обработчик текстовых сообщений
-@dp.message()
-async def echo_message(message: types.Message):
-    await message.answer(message.text)
 
 async def main():
-    await dp.start_polling(bot)
+    """
+    Основная функция для установки конфигурации бота.
+    Для создания бота необходимо получить token в telegram https://t.me/BotFather
+    и добавить полученный токен в файл .env
+    """
 
-if __name__ == "main":
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher()
+
+    # запуск логирования
+    setup_logger(fname=__name__)
+
+    # Регистрация хендлеров
+    register_message_handlers(dp)
+
+    # Установка команд
+    await set_my_commands(bot)
+
+    # Запуск polling
+    await dp.start_polling(bot)
+    
+if __name__ == "__main__":
     asyncio.run(main())
